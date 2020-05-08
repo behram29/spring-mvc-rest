@@ -3,7 +3,7 @@ package bahram.springframework.springmvcrest.controllers.v1;
 import bahram.springframework.springmvcrest.api.v1.model.CategoryDTO;
 import bahram.springframework.springmvcrest.services.CategoryService;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -16,7 +16,6 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -24,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CategoryControllerTest {
+
     public static final String NAME = "Jim";
 
     @Mock
@@ -75,5 +75,4 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(NAME)));
     }
-
 }

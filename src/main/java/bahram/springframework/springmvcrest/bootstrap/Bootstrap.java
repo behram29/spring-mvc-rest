@@ -1,21 +1,31 @@
 package bahram.springframework.springmvcrest.bootstrap;
 
 import bahram.springframework.springmvcrest.domain.Category;
+import bahram.springframework.springmvcrest.domain.Customer;
 import bahram.springframework.springmvcrest.repositories.CategoryRepository;
+import bahram.springframework.springmvcrest.repositories.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Bootstrap implements CommandLineRunner {
+public class Bootstrap implements CommandLineRunner{
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRespository;
+    private final CustomerRepository customerRepository;
 
-    public Bootstrap(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public Bootstrap(CategoryRepository categoryRespository, CustomerRepository customerRepository) {
+        this.categoryRespository = categoryRespository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
+
+        loadCategories();
+        loadCustomers();
+    }
+
+    private void loadCategories() {
         Category fruits = new Category();
         fruits.setName("Fruits");
 
@@ -31,15 +41,30 @@ public class Bootstrap implements CommandLineRunner {
         Category nuts = new Category();
         nuts.setName("Nuts");
 
-        categoryRepository.save(fruits);
-        categoryRepository.save(dried);
-        categoryRepository.save(fresh);
-        categoryRepository.save(exotic);
-        categoryRepository.save(nuts);
+        categoryRespository.save(fruits);
+        categoryRespository.save(dried);
+        categoryRespository.save(fresh);
+        categoryRespository.save(exotic);
+        categoryRespository.save(nuts);
 
-        System.out.println("Data Loaded = " +categoryRepository.count());
+        System.out.println("Categories Loaded: " + categoryRespository.count());
+    }
 
+    private void loadCustomers() {
+        //given
+        Customer customer1 = new Customer();
+        customer1.setId(1l);
+        customer1.setFirstname("Ali");
+        customer1.setLastname("Aliyev");
+        customerRepository.save(customer1);
 
-        System.out.println("DAtabase created");
+        Customer customer2 = new Customer();
+        customer2.setId(2l);
+        customer2.setFirstname("Bahram");
+        customer2.setLastname("Sattarli");
+
+        customerRepository.save(customer2);
+
+        System.out.println("Customers Loaded: " + customerRepository.count());
     }
 }
