@@ -1,7 +1,9 @@
 package bahram.springframework.springmvcrest.controllers.v1;
 
 import bahram.springframework.springmvcrest.api.v1.model.CustomerDTO;
+import bahram.springframework.springmvcrest.controllers.RestResponseEntityExceptionHandler;
 import bahram.springframework.springmvcrest.services.CustomerService;
+import bahram.springframework.springmvcrest.services.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -38,7 +40,9 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
+                .build();
     }
 
     @Test
@@ -160,4 +164,15 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
 
         verify(customerService).deleteCustomerById(anyLong());
     }
+
+    @Test
+    public void testNotFoundException() throws Exception {
+
+        when(customerService.getCustomerById(anyLong())).thenThrow(ResourceNotFoundException.class);
+
+        mockMvc.perform(get(CustomerController.BASE_URL + "/222")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
 }
