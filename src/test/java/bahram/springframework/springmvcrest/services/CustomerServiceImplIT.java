@@ -20,8 +20,6 @@ import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
 
 /**
  * Created by jt on 10/3/17.
@@ -106,15 +104,5 @@ public class CustomerServiceImplIT {
 
         //return first id
         return customers.get(0).getId();
-    }
-
-    @Test
-    public void deleteCustomerById() throws Exception {
-
-        Long id = 1L;
-
-        customerService.deleteCustomerById(id);
-
-        verify(customerRepository, times(1)).deleteById(anyLong());
     }
 }
